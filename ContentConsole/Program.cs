@@ -1,4 +1,5 @@
 ﻿using System;
+using Content.Bll;
 
 namespace ContentConsole
 {
@@ -6,35 +7,30 @@ namespace ContentConsole
     {
         public static void Main(string[] args)
         {
-            string bannedWord1 = "swine";
-            string bannedWord2 = "bad";
-            string bannedWord3 = "nasty";
-            string bannedWord4 = "horrible";
-
-            string content =
-                "The weather in Manchester in winter is bad. It rains all the time - it must be horrible for people visiting.";
-
-            int badWords = 0;
-            if (content.Contains(bannedWord1))
-            {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord2))
-            {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord3))
-            {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord4))
-            {
-                badWords = badWords + 1;
-            }
-
+			var contentAnalyzer = new ContentAnalyzer(new FakeRepository()); // Could also have used Moq.
+			
+			Console.WriteLine("Story 1");
             Console.WriteLine("Scanned the text:");
-            Console.WriteLine(content);
-            Console.WriteLine("Total Number of negative words: " + badWords);
+			contentAnalyzer.SetContentFilteringStatus(false);
+            Console.WriteLine(contentAnalyzer.GetContent());
+            Console.WriteLine("Total Number of negative words: " + contentAnalyzer.GetBannedWordCount());
+			Console.WriteLine();
+
+			Console.WriteLine("Story 2");
+			Console.WriteLine("I haven't implemented an UpdateBannedWords method but the unit tests prove that the list of banned words is not hard coded.");
+			Console.WriteLine();
+			
+			Console.WriteLine("Story 3");
+			contentAnalyzer.SetContentFilteringStatus(true);
+			Console.WriteLine(contentAnalyzer.GetContent());
+			Console.WriteLine();
+
+			Console.WriteLine("Story 4");
+			Console.WriteLine("Scanned the text:");
+			contentAnalyzer.SetContentFilteringStatus(false);
+			Console.WriteLine(contentAnalyzer.GetContent());
+			Console.WriteLine("Total Number of negative words: " + contentAnalyzer.GetBannedWordCount());
+			Console.WriteLine();
 
             Console.WriteLine("Press ANY key to exit.");
             Console.ReadKey();
